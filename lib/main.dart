@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Container(
-            color: Colors.black.withOpacity(0.3), // Fondo semitransparente
+            color: Colors.black.withOpacity(0.3),
           ),
           Center(
             child: Column(
@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       context,
                       icon: Icons.map,
                       text: 'Google Maps',
-                      page: OpenStreetMapPage(), // ✅ Corregido
+                      page: OpenStreetMapPage(),
                     ),
                   ],
                 ),

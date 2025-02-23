@@ -1,41 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
- 
+
 class FirebasePage extends StatefulWidget {
   const FirebasePage({super.key});
- 
+
   @override
   State<FirebasePage> createState() => _FirebasePageState();
 }
- 
+
 class _FirebasePageState extends State<FirebasePage> {
   final TextEditingController _controller = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<String> _firebaseData = [];
- 
+
   @override
   void initState() {
     super.initState();
     _loadData();
   }
- 
+
   Future<void> _loadData() async {
-    final QuerySnapshot snapshot = await _firestore.collection('data').get();
-    setState(() {
-      _firebaseData = snapshot.docs.map((doc) => doc['value'] as String).toList();
-    });
-  }
- 
-  Future<void> _addFirebaseData() async {
-    if (_controller.text.isNotEmpty) {
-      await _firestore.collection('data').add({
-        'value': _controller.text,
+    try {
+      final QuerySnapshot snapshot = await _firestore.collection('data').get();
+      setState(() {
+        _firebaseData = snapshot.docs.map((doc) {
+          // Verifica si 'value' existe y es un String
+          return doc['value'] is String ? doc['value'] as String : 'Valor no válido';
+        }).toList();
       });
-      _controller.clear();
-      _loadData();
+    } catch (e) {
+      print("Error cargando datos de Firebase: $e");
     }
   }
- 
+
+  Future<void> _addFirebaseData() async {
+    if (_controller.text.isNotEmpty) {
+      try {
+        await _firestore.collection('data').add({
+          'value': _controller.text,
+        });
+        _controller.clear();
+        _loadData();
+      } catch (e) {
+        print("Error agregando datos a Firebase: $e");
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
