@@ -25,7 +25,7 @@ class _JsonPageState extends State<JsonPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Insertar Datos JSON'),
+        title: const Text('Insertar Datos'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

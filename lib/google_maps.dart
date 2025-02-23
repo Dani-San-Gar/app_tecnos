@@ -1,48 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
-class GoogleMapsPage extends StatefulWidget {
-  const GoogleMapsPage({super.key});
+class OpenStreetMapPage extends StatelessWidget {
+  OpenStreetMapPage({super.key});
 
-  @override
-  State<GoogleMapsPage> createState() => _GoogleMapsPageState();
-}
-
-class _GoogleMapsPageState extends State<GoogleMapsPage> {
-  late GoogleMapController mapController;
-
-  final LatLng cibeles = const LatLng(40.4195, -3.6938);
-  final LatLng aparicio = const LatLng(40.4381, -3.7017);
-
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
+  final List<Marker> _markers = [
+    Marker(
+      point: LatLng(40.4193, -3.6933),
+      width: 40,
+      height: 40,
+      child: const Icon(Icons.location_pin, color: Colors.red, size: 40),
+    ),
+    Marker(
+      point: LatLng(40.38495, -3.71852), 
+      width: 40,
+      height: 40,
+      child: const Icon(Icons.restaurant, color: Colors.blue, size: 40),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mapa de Madrid'),
-      ),
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: cibeles,
-          zoom: 14.0,
+      appBar: AppBar(title: const Text("Mapa de Madrid")),
+      body: FlutterMap(
+        options: const MapOptions(
+          initialCenter: LatLng(40.4183, -3.6919), // Madrid
+          initialZoom: 14.0,
         ),
-        markers: {
-          Marker(
-            markerId: const MarkerId('cibeles'),
-            position: cibeles,
-            infoWindow: const InfoWindow(title: 'Fuente de Cibeles'),
+        children: [
+          TileLayer(
+            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            subdomains: ['a', 'b', 'c'],
           ),
-          Marker(
-            markerId: const MarkerId('aparicio'),
-            position: aparicio,
-            infoWindow: const InfoWindow(title: 'Restaurante Aparicio'),
-          ),
-        },
+          MarkerLayer(markers: _markers),
+        ],
       ),
     );
   }
-} 
+}

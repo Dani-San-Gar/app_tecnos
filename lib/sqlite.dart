@@ -64,7 +64,7 @@ class _SQLitePageState extends State<SQLitePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Insertar Datos SQLite'),
+        title: const Text('Insertar Datos'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
